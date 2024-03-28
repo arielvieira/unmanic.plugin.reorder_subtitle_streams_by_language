@@ -4,7 +4,7 @@
 """
     Written by:               Josh.5 <jsunnex@gmail.com>
     Date:                     23 March 2021, (8:06 PM)
- 
+
     Copyright:
         Copyright (C) 2021 Josh Sunnex
 
@@ -92,9 +92,12 @@ class PluginStreamMapper(StreamMapper):
             # Process streams of interest
             self.found_search_string_streams = True
             if self.test_tags_for_search_string(stream_info.get('tags')):
-                self.search_string_stream_mapping += ['-map', '0:{}:{}'.format(ident.get(codec_type), stream_id)]
+                disposition = '0'
+                if len(self.search_string_stream_mapping) == 0:
+                    disposition = 'default'
+                self.search_string_stream_mapping += ['-map', '0:{}:{}'.format(ident.get(codec_type), stream_id), '-disposition:{}:{}'.format(ident.get(codec_type), stream_id), disposition]
             else:
-                self.unmatched_stream_mapping += ['-map', '0:{}:{}'.format(ident.get(codec_type), stream_id)]
+                self.unmatched_stream_mapping += ['-map', '0:{}:{}'.format(ident.get(codec_type), stream_id), '-disposition:{}:{}'.format(ident.get(codec_type), stream_id), '0']
         else:
             # Process streams not of interest
             if not self.found_search_string_streams:
